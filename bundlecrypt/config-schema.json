@@ -1,0 +1,165 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "description": "BundleCrypt configuration file",
+    "properties": {
+        "formatVersion": {
+            "type": "string",
+            "description": "Version of the file format"
+        },
+        "cryptConfigurations": {
+            "$ref": "#/definitions/mapCryptSet",
+            "description": "Map with configurations"
+        },
+        "keys": {
+            "$ref": "#/definitions/mapKeys",
+            "description": "Version of the file format",
+            "description": "Map with keys"
+        }
+    },
+    "required": [
+        "formatVersion",
+        "cryptConfigurations"
+    ],
+    "definitions": {
+        "cryptSet": {
+            "type": "object",
+            "description": "Security configuration",
+            "properties": {
+                "config.json": {
+                    "type": "object",
+                    "description": "Security configuration for config.json",
+                    "properties": {
+                        "jws": {
+                            "type": "object",
+                            "description": "config.json signing",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enabling signing (JWS). If both JWS and JWE are disabled, the json file is not converted into JWT, the file name is kept config.json."
+                                },
+                                "alg": {
+                                    "type": "string",
+                                    "description": "Algorithm to be used, see https://www.iana.org/assignments/jose/jose.xhtml. Check the documentation for supported algorithms."
+                                },
+                                "kid": {
+                                    "type": "string",
+                                    "description": "kid, referencing the key described in 'keys' object"
+                                }
+                            },
+                            "required": [
+                                "enabled",
+                                "alg",
+                                "kid"
+                            ]
+                        },
+                        "jwe": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enabling encryption (JWE). If both JWS and JWE are disabled, the json file is not converted into JWT, the file name is kept config.json."
+                                },
+                                "alg": {
+                                    "type": "string",
+                                    "description": "Algorithm to be used, see https://www.iana.org/assignments/jose/jose.xhtml. Check the documentation for supported algorithms."
+                                },
+                                "enc": {
+                                    "type": "string",
+                                    "description": "Encryption algorithm to be used, see https://www.iana.org/assignments/jose/jose.xhtml. Check the documentation for supported algorithms."
+                                },
+                                "kid": {
+                                    "type": "string",
+                                    "description": "kid, referencing the key described in 'keys' object"
+                                }
+                            },
+                            "required": [
+                                "enabled",
+                                "alg",
+                                "enc",
+                                "kid"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "jws",
+                        "jwe"
+                    ]
+                },
+                "rootfs": {
+                    "type": "object",
+                    "description": "Security configuration for rootfs image",
+                    "properties": {
+                        "dm-verity": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enabling authentication. If both authentication and encryption are disabled, the filesystem image is plain squashfs."
+                                }
+                            },
+                            "required": [
+                                "enabled"
+                            ]
+                        },
+                        "dm-crypt": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Enabling encryption. If both authentication and encryption are disabled, the filesystem image is plain squashfs."
+                                }
+                            },
+                            "required": [
+                                "enabled"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "dm-verity",
+                        "dm-crypt"
+                    ]
+                }
+            },
+            "required": [
+                "config.json",
+                "rootfs"
+            ]
+        },
+        "mapCryptSet": {
+            "additionalProperties": {
+                "$ref": "#/definitions/cryptSet"
+            }
+        },
+        "keyDescription": {
+            "type": "object",
+            "description": "Key description. Key used for signing must refer key-pem file. Key used for authentication must refer either cert-pem or pubkey-pem file. Key used for encryption must refer either cert-pem or pubkey-pem file. Key used for decryption  must refer key-pem file.",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Textual description (required)"
+                },
+                "cert-pem": {
+                    "type": "string",
+                    "description": "File containing X.509 certificate in PEM format, used for certificates and public keys. If cert-pem is present, pub-key should not be present."
+                },
+                "key-pem": {
+                    "type": "string",
+                    "description": "File containing symmetric or private assymetric key in PEM format"
+                },
+                "pubkey-pem": {
+                    "type": "string",
+                    "description": "File containing public key in PEM format. If cert-pem is present, pub-key should not be present."
+                }
+            },
+            "required": [
+                "description"
+            ]
+        },
+        "mapKeys": {
+            "additionalProperties": {
+                "$ref": "#/definitions/keyDescription"
+            }
+        }
+    }
+}

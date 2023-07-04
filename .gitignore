@@ -1,0 +1,13 @@
+.coverage
+.idea/
+.vagrant/
+__pycache__/
+bundlecrypt.egg-info/
+demos/demo-inotify/inputs/*
+demos/demo-inotify/outputs/*
+demos/demo-inotify/tmp/*
+htmlcov/
+dmcrypt-rdk*.deb
+test/interoperability/jose-util
+tmp/
+venv*/

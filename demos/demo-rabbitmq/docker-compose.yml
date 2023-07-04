@@ -1,0 +1,53 @@
+################################################################################
+# If not stated otherwise in this file or this component's Licenses.txt file the
+# following copyright and licenses apply:
+#
+# Copyright 2021 Liberty Global B.V.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+################################################################################
+
+version: '3'
+services:
+  app:
+    build:
+      context: .
+    environment:
+      BUNDLECRYPT_CONFIG_ID: ${BUNDLECRYPT_CONFIG_ID:-test}
+    privileged: true
+    image: bundlecrypt-demo-rabbitmq
+    init: true
+    volumes:
+      - ../../examples/configs:/configs
+      - ../../examples/keys:/keys
+      - ${HOME}/.aws/credentials:/root/.aws/credentials
+    links:
+      - "rabbitmq:rabbitmq"
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    hostname: bundlecrypt-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_PID_FILE: /tmp/rabbitmq.pid
+    healthcheck:
+        test: ["CMD", "rabbitmqctl", "wait", "/tmp/rabbitmq.pid"]
+        interval: 30s
+        timeout: 10s
+        retries: 5

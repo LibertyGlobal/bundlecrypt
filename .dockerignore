@@ -1,0 +1,14 @@
+.coverage
+.git/
+.idea/
+.pytest_cache/
+.vagrant/
+__pycache__/
+bundlecrypt.egg-info/
+demos/demo-inotify/inputs/*
+demos/demo-inotify/outputs/*
+demos/demo-inotify/tmp/*
+htmlcov/
+test/
+tmp/
+venv*/

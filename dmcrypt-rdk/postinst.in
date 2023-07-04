@@ -1,0 +1,1 @@
+/sbin/setcap cap_setuid+ep @CMAKE_INSTALL_FULL_SBINDIR@/@PROJECT_NAME@

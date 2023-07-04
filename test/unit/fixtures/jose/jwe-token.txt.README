@@ -1,0 +1,5 @@
+The token was generated with jose-util [1]:
+
+echo -n "payload" | jose-util encrypt --alg=RSA-OAEP --enc=A256CBC-HS512 --key=test/unit/fixtures/keys/test/bundlecrypt-test-pubkey.pem
+
+[1] https://github.com/square/go-jose/tree/v2.6.0/jose-util

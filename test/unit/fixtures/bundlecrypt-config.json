@@ -1,0 +1,44 @@
+{
+  "formatVersion": "1.0.0",
+  "cryptConfigurations":
+  {
+    "test": {
+      "config.json": {
+        "jws": {
+          "enabled": true,
+          "alg": "RS256",
+          "kid": "bundlecrypt-test-sign"
+        },
+        "jwe": {
+          "enabled": true,
+          "alg": "RSA-OAEP",
+          "enc": "A256CBC-HS512",
+          "kid": "bundlecrypt-test-enc"
+        }
+      },
+      "rootfs": {
+        "enabled": true,
+        "dm-verity": {
+          "enabled": true
+        },
+        "dm-crypt": {
+          "enabled": true
+        }
+      }
+    }
+  }
+,
+  "keys":
+  {
+    "bundlecrypt-test-sign": {
+      "description": "BundleCrypt TEST key, used for signing/verification operations during development/tests",
+      "key-pem": "test/bundlecrypt-test-key.pem",
+      "cert-pem": "test/bundlecrypt-test-cert.pem"
+    },
+    "bundlecrypt-test-enc": {
+      "description": "BundleCrypt TEST key, used for encryption/decryption operations during development/tests",
+      "key-pem": "test/bundlecrypt-test-key.pem",
+      "pubkey-pem": "test/bundlecrypt-test-pubkey.pem"
+    }
+  }
+}
