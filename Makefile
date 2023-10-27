@@ -76,8 +76,8 @@ test-encrypt: image fix-loop-devices
 			--config $(CONFIG_PATH) \
 			--id $(CONFIG_ID) \
 			--remove-other-permissions \
-			--uid 252 \
-			--gid 252 \
+			--uid 0 \
+			--gid 0 \
 			$(VERBOSE) \
 			$(ENCRYPT_INPUT_FILE) \
 			$(ENCRYPT_OUTPUT_FILE)
